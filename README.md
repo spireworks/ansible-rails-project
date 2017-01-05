@@ -23,7 +23,7 @@ rails_project_gemset: rails_project
 - name: Playbook example
   hosts: example_host
   roles:
-    - role: rails_project
+    - role: rails-project
       rails_project_deploy_to: /srv/example_project
       rails_project_gemset: example_project
 ```
