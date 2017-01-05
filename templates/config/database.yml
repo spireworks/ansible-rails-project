@@ -1,0 +1,12 @@
+---
+default: &global
+  adapter: postgresql
+  encoding: utf8
+  username: {{ rails_project_postgres_username }}
+  password: {{ rails_project_postgres_password }}
+  host: {{ rails_project_postgres_host }}
+  port: {{ rails_project_postgres_port }}
+
+{{ env }}:
+  <<: *global
+  database: {{ rails_project_database_name }}

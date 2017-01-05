@@ -1,0 +1,61 @@
+---
+- name: Install machines packages dependencies for ruby and gems
+  apt: name="{{ item }}" state=present
+  become: yes
+  with_items:
+    # Nokogiri
+    - libxml2
+    - libxml2-dev
+    - libxslt-dev
+    - zlib1g-dev
+    # pg gem
+    - libpq-dev
+    # mini_magick gem
+    - imagemagick
+    - libmagickwand-dev
+    # assets precompile
+    - nodejs
+    # curb (curl dependencies)
+    - libcurl4-openssl-dev
+    # - libcurl4-gnutls-dev
+    - postgresql-client
+  tags:
+    - rails_project_machine_dependencies
+
+- name: creates directories
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+  with_items:
+    - "{{ rails_project_deploy_to }}"
+    - "{{ rails_project_deploy_to }}/releases"
+    - "{{ rails_project_deploy_to }}/shared/system"
+    - "{{ rails_project_deploy_to }}/shared/config"
+    - "{{ rails_project_deploy_to }}/shared/pids"
+    - "{{ rails_project_deploy_to }}/shared/log"
+  become: yes
+  tags: directories
+
+- command: "/bin/bash -lc 'rvm --default use {{ rails_project_ruby_version }}@{{ rails_project_gemset }} --create'"
+  tags:
+    - gemset
+
+- command: /bin/bash -lc 'gem install bundler'
+  tags:
+    - bundler
+
+- command: /bin/bash -lc 'gem install whenever'
+  tags:
+    - whenever
+
+- command: "/bin/bash -lc 'rvm wrapper ruby-{{ rails_project_ruby_version }}@{{ rails_project_gemset }} {{ rails_project_gemset }} bundle'"
+  tags:
+    - bundler
+
+- template:
+    src: config/database.yml
+    dest: "{{ rails_project_deploy_to }}/shared/config/database.yml"
+  tags: config
+  notify: nginx restart
