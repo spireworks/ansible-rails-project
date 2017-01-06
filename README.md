@@ -3,7 +3,14 @@
 This is a role to provision some basic folder for a rails project based on
 Capistrano deployment folder.
 
-# Default Variables
+## Dependencies in the machine
+
+ - ruby(with rvm)
+ - node
+ - logrotate
+
+
+## Default Variables
 
 ```yml
 ---
@@ -16,7 +23,7 @@ rails_project_database_name: "rails_project_{{ env }}"
 rails_project_gemset: rails_project
 ```
 
-# Usage
+## Usage
 
 ```yml
 ---
@@ -27,5 +34,3 @@ rails_project_gemset: rails_project
       rails_project_deploy_to: /srv/example_project
       rails_project_gemset: example_project
 ```
-
-

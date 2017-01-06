@@ -38,23 +38,28 @@
   become: yes
   tags: directories
 
-- command: "/bin/bash -lc 'rvm --default use {{ rails_project_ruby_version }}@{{ rails_project_gemset }} --create'"
+- name: declare gemset
+  command: "/bin/bash -lc 'rvm --default use {{ rails_project_ruby_version }}@{{ rails_project_gemset }} --create'"
   tags:
     - gemset
 
-- command: /bin/bash -lc 'gem install bundler'
+- name: install bundler gem
+  command: /bin/bash -lc 'gem install bundler'
   tags:
     - bundler
 
-- command: /bin/bash -lc 'gem install whenever'
+- name: install whenever gem
+  command: /bin/bash -lc 'gem install whenever'
   tags:
     - whenever
 
-- command: "/bin/bash -lc 'rvm wrapper ruby-{{ rails_project_ruby_version }}@{{ rails_project_gemset }} {{ rails_project_gemset }} bundle'"
+- name: create a wrapper for bundler in the gemset
+  command: "/bin/bash -lc 'rvm wrapper ruby-{{ rails_project_ruby_version }}@{{ rails_project_gemset }} {{ rails_project_gemset }} bundle'"
   tags:
     - bundler
 
-- template:
+- name: write config/database.yml file
+  template:
     src: config/database.yml
     dest: "{{ rails_project_deploy_to }}/shared/config/database.yml"
   tags: config
