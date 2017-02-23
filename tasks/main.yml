@@ -62,5 +62,7 @@
   template:
     src: config/database.yml
     dest: "{{ rails_project_deploy_to }}/shared/config/database.yml"
-  tags: config
+  tags:
+    - rails_project_config
+    - rails_project_config_database
   notify: nginx restart
