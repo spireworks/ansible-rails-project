@@ -1,5 +1,5 @@
 {{ rails_project_log_dir }}/*.log {
-  daily
+  {{ rails_project_logrotate_interval }}
   missingok
   rotate 30
   compress

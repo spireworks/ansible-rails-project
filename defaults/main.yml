@@ -6,3 +6,4 @@ rails_project_shared_dir: "{{ rails_project_deploy_to }}/shared"
 rails_project_log_dir: "{{ rails_project_shared_dir }}/log"
 rails_project_database_name: "rails_project_{{ env }}"
 rails_project_gemset: rails_project
+rails_project_logrotate_interval: daily

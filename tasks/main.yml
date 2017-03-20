@@ -66,3 +66,14 @@
     - rails_project_config
     - rails_project_config_database
   notify: nginx restart
+
+- name: provision /etc/logrotate.d/rails
+  template:
+    src: logrotate_conf
+    dest: /etc/logrotate.d/rails
+  become: yes
+  tags:
+    - logrotate
+    - logrotate_template
+    - logrotate_rails
+    - rails_project_logrotate
